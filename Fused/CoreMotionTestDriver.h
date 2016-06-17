@@ -33,8 +33,8 @@
                                          yaw:(nonnull float *)yaw;
 
 // Class initializer.
-- (nullable instancetype)initSampleFrequencyHz:(float)sampleFrequencyHz
-                                          beta:(float)beta;
+- (nullable instancetype)initWithSampleFrequencyHz:(float)sampleFrequencyHz
+                                              beta:(float)beta;
 
 // Starts the driver.
 - (void)start;

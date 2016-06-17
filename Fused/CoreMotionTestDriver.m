@@ -77,8 +77,8 @@
 }
 
 // Class initializer.
-- (nullable instancetype)initSampleFrequencyHz:(float)sampleFrequencyHz
-                                          beta:(float)beta;
+- (nullable instancetype)initWithSampleFrequencyHz:(float)sampleFrequencyHz
+                                              beta:(float)beta
 {
     // Initialize superclass.
     self = [super init];
