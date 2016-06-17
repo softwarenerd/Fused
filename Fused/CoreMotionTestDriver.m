@@ -1,15 +1,15 @@
 //
-//  CoreMotionMadgwickTestDriver.m
+//  CoreMotionTestDriver.m
 //  Fused
 //
 //  Created by Brian Lambert on 6/7/16.
 //
-//  CoreMotionMadgwickTestDriver uses CoreMotion device motion updates as IMU input data to
+//  CoreMotionTestDriver uses CoreMotion device motion updates as IMU input data to
 //  Fused. It then uses the resulting quaternion to calculate Euler angles.
 //
 
 #import <CoreMotion/CoreMotion.h>
-#import "CoreMotionMadgwickTestDriver.h"
+#import "CoreMotionTestDriver.h"
 #import "MadgwickSensorFusion.h"
 
 // Converts radians to degrees.
@@ -50,8 +50,8 @@ void CalculateEulerAnglesFromQuaternion(float q0, float q1, float q2, float q3, 
     }
 }
 
-// CoreMotionMadgwickTestDriver implementation.
-@implementation CoreMotionMadgwickTestDriver
+// CoreMotionTestDriver implementation.
+@implementation CoreMotionTestDriver
 {
 @private
     // The motion manager.
@@ -131,7 +131,7 @@ void CalculateEulerAnglesFromQuaternion(float q0, float q1, float q2, float q3, 
         float coreMotionYaw = RadiansToDegrees([[motion attitude] yaw]);
         
         // Notify the delegate.
-        if ([[self delegate] respondsToSelector:@selector(coreMotionMadgwickTestDriver:
+        if ([[self delegate] respondsToSelector:@selector(CoreMotionTestDriver:
                                                           didUpdateGyroscopeX:
                                                           gyroscopeY:
                                                           gyroscopeZ:
@@ -152,7 +152,7 @@ void CalculateEulerAnglesFromQuaternion(float q0, float q1, float q2, float q3, 
                                                           coreMotionPitch:
                                                           coreMotionYaw:)])
         {
-            [[self delegate] coreMotionMadgwickTestDriver:self
+            [[self delegate] CoreMotionTestDriver:self
                                       didUpdateGyroscopeX:[motion rotationRate].x
                                                gyroscopeY:[motion rotationRate].y
                                                gyroscopeZ:[motion rotationRate].z

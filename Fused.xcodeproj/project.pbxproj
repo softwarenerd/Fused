@@ -10,9 +10,9 @@
 		D349BB271D14407E00CDD28A /* Fused.h in Headers */ = {isa = PBXBuildFile; fileRef = D349BB261D14407E00CDD28A /* Fused.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D349BB2E1D14407E00CDD28A /* Fused.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D349BB231D14407E00CDD28A /* Fused.framework */; };
 		D349BB331D14407E00CDD28A /* FusedTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D349BB321D14407E00CDD28A /* FusedTests.m */; };
-		D349BB401D1449F300CDD28A /* CoreMotionMadgwickTestDriver.h in Headers */ = {isa = PBXBuildFile; fileRef = D349BB3D1D1449F300CDD28A /* CoreMotionMadgwickTestDriver.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D349BB411D1449F300CDD28A /* CoreMotionMadgwickTestDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = D349BB3E1D1449F300CDD28A /* CoreMotionMadgwickTestDriver.m */; };
-		D349BB421D1449F300CDD28A /* CoreMotionMadgwickTestDriverDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = D349BB3F1D1449F300CDD28A /* CoreMotionMadgwickTestDriverDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D349BB401D1449F300CDD28A /* CoreMotionTestDriver.h in Headers */ = {isa = PBXBuildFile; fileRef = D349BB3D1D1449F300CDD28A /* CoreMotionTestDriver.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D349BB411D1449F300CDD28A /* CoreMotionTestDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = D349BB3E1D1449F300CDD28A /* CoreMotionTestDriver.m */; };
+		D349BB421D1449F300CDD28A /* CoreMotionTestDriverDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = D349BB3F1D1449F300CDD28A /* CoreMotionTestDriverDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D349BB451D1449FC00CDD28A /* MadgwickSensorFusion.h in Headers */ = {isa = PBXBuildFile; fileRef = D349BB431D1449FC00CDD28A /* MadgwickSensorFusion.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D349BB461D1449FC00CDD28A /* MadgwickSensorFusion.m in Sources */ = {isa = PBXBuildFile; fileRef = D349BB441D1449FC00CDD28A /* MadgwickSensorFusion.m */; };
 /* End PBXBuildFile section */
@@ -34,9 +34,9 @@
 		D349BB2D1D14407E00CDD28A /* FusedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FusedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D349BB321D14407E00CDD28A /* FusedTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FusedTests.m; sourceTree = "<group>"; };
 		D349BB341D14407E00CDD28A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D349BB3D1D1449F300CDD28A /* CoreMotionMadgwickTestDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreMotionMadgwickTestDriver.h; sourceTree = "<group>"; };
-		D349BB3E1D1449F300CDD28A /* CoreMotionMadgwickTestDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreMotionMadgwickTestDriver.m; sourceTree = "<group>"; };
-		D349BB3F1D1449F300CDD28A /* CoreMotionMadgwickTestDriverDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreMotionMadgwickTestDriverDelegate.h; sourceTree = "<group>"; };
+		D349BB3D1D1449F300CDD28A /* CoreMotionTestDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreMotionTestDriver.h; sourceTree = "<group>"; };
+		D349BB3E1D1449F300CDD28A /* CoreMotionTestDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreMotionTestDriver.m; sourceTree = "<group>"; };
+		D349BB3F1D1449F300CDD28A /* CoreMotionTestDriverDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreMotionTestDriverDelegate.h; sourceTree = "<group>"; };
 		D349BB431D1449FC00CDD28A /* MadgwickSensorFusion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MadgwickSensorFusion.h; sourceTree = "<group>"; };
 		D349BB441D1449FC00CDD28A /* MadgwickSensorFusion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MadgwickSensorFusion.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -81,9 +81,9 @@
 		D349BB251D14407E00CDD28A /* Fused */ = {
 			isa = PBXGroup;
 			children = (
-				D349BB3D1D1449F300CDD28A /* CoreMotionMadgwickTestDriver.h */,
-				D349BB3E1D1449F300CDD28A /* CoreMotionMadgwickTestDriver.m */,
-				D349BB3F1D1449F300CDD28A /* CoreMotionMadgwickTestDriverDelegate.h */,
+				D349BB3D1D1449F300CDD28A /* CoreMotionTestDriver.h */,
+				D349BB3E1D1449F300CDD28A /* CoreMotionTestDriver.m */,
+				D349BB3F1D1449F300CDD28A /* CoreMotionTestDriverDelegate.h */,
 				D349BB261D14407E00CDD28A /* Fused.h */,
 				D349BB281D14407E00CDD28A /* Info.plist */,
 				D349BB431D1449FC00CDD28A /* MadgwickSensorFusion.h */,
@@ -110,8 +110,8 @@
 			files = (
 				D349BB271D14407E00CDD28A /* Fused.h in Headers */,
 				D349BB451D1449FC00CDD28A /* MadgwickSensorFusion.h in Headers */,
-				D349BB401D1449F300CDD28A /* CoreMotionMadgwickTestDriver.h in Headers */,
-				D349BB421D1449F300CDD28A /* CoreMotionMadgwickTestDriverDelegate.h in Headers */,
+				D349BB401D1449F300CDD28A /* CoreMotionTestDriver.h in Headers */,
+				D349BB421D1449F300CDD28A /* CoreMotionTestDriverDelegate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -212,7 +212,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D349BB461D1449FC00CDD28A /* MadgwickSensorFusion.m in Sources */,
-				D349BB411D1449F300CDD28A /* CoreMotionMadgwickTestDriver.m in Sources */,
+				D349BB411D1449F300CDD28A /* CoreMotionTestDriver.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -396,6 +396,7 @@
 				D349BB391D14407E00CDD28A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D349BB3A1D14407E00CDD28A /* Build configuration list for PBXNativeTarget "FusedTests" */ = {
 			isa = XCConfigurationList;
@@ -404,6 +405,7 @@
 				D349BB3C1D14407E00CDD28A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -1,5 +1,5 @@
 //
-//  CoreMotionMadgwickTestDriverDelegate.h
+//  CoreMotionTestDriverDelegate.h
 //  Fused
 //
 //  Created by Brian Lambert on 6/11/16.
@@ -7,14 +7,14 @@
 //
 
 // Forward declarations.
-@class CoreMotionMadgwickTestDriver;
+@class CoreMotionTestDriver;
 
-// CoreMotionMadgwickTestDriverDelegate protocol.
-@protocol CoreMotionMadgwickTestDriverDelegate <NSObject>
+// CoreMotionTestDriverDelegate protocol.
+@protocol CoreMotionTestDriverDelegate <NSObject>
 @required
 
 // Notifies the delegate of an update.
-- (void)coreMotionMadgwickTestDriver:(CoreMotionMadgwickTestDriver *)coreMotionMadgwickTestDriver
+- (void)CoreMotionTestDriver:(CoreMotionTestDriver *)CoreMotionTestDriver
                  didUpdateGyroscopeX:(float)gx
                           gyroscopeY:(float)gy
                           gyroscopeZ:(float)gz
