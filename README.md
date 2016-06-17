@@ -12,6 +12,10 @@ Fused should be used via [Carthage dependency manager](https://github.com/Cartha
 
 ```github "softwarenerd/Fused"```
 
+#### Update Carthage
+
+```carthage update```
+
 #### Add Fused.framework to Linked Frameworks and Libraries
 
 ![AddFramework](Documentation/AddFramework.png)
