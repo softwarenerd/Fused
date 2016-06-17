@@ -14,7 +14,7 @@
 @required
 
 // Notifies the delegate of an update.
-- (void)CoreMotionTestDriver:(CoreMotionTestDriver *)CoreMotionTestDriver
+- (void)coreMotionTestDriver:(CoreMotionTestDriver *)CoreMotionTestDriver
          didUpdateGyroscopeX:(float)gx
                   gyroscopeY:(float)gy
                   gyroscopeZ:(float)gz

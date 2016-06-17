@@ -143,7 +143,7 @@
         float coreMotionYaw = [CoreMotionTestDriver degreesFromRadians:[[motion attitude] yaw]];
         
         // Notify the delegate.
-        if ([[self delegate] respondsToSelector:@selector(CoreMotionTestDriver:
+        if ([[self delegate] respondsToSelector:@selector(coreMotionTestDriver:
                                                           didUpdateGyroscopeX:
                                                           gyroscopeY:
                                                           gyroscopeZ:
@@ -164,7 +164,7 @@
                                                           coreMotionPitch:
                                                           coreMotionYaw:)])
         {
-            [[self delegate] CoreMotionTestDriver:self
+            [[self delegate] coreMotionTestDriver:self
                               didUpdateGyroscopeX:[motion rotationRate].x
                                        gyroscopeY:[motion rotationRate].y
                                        gyroscopeZ:[motion rotationRate].z
