@@ -12,14 +12,40 @@
 #import "CoreMotionTestDriver.h"
 #import "MadgwickSensorFusion.h"
 
-// Converts radians to degrees.
-static inline float RadiansToDegrees(float radians)
+// CoreMotionTestDriver implementation.
+@implementation CoreMotionTestDriver
+{
+@private
+    // The motion manager.
+    CMMotionManager * _motionManager;
+    
+    // The operation queue.
+    NSOperationQueue * _operationQueue;
+    
+    // The Madgwick sensor fusion.
+    MadgwickSensorFusion * _madgwickSensorFusion;
+}
+
+// Converts from radians to degrees.
++ (float)degreesFromRadians:(float)radians
 {
     return radians * 180.0f / (float)M_PI;
 }
 
+// Converts from degrees to radians.
++ (float)radiansFromDegrees:(float)degrees
+{
+    return degrees * (float)M_PI / 180.0f;
+}
+
 // Calculates Euler angles from quaternion.
-void CalculateEulerAnglesFromQuaternion(float q0, float q1, float q2, float q3, float * roll, float * pitch, float * yaw)
++ (void)calculateEulerAnglesFromQuaternionQ0:(float)q0
+                                          Q1:(float)q1
+                                          Q2:(float)q2
+                                          Q3:(float)q3
+                                        roll:(float *)roll
+                                       pitch:(float *)pitch
+                                         yaw:(float *)yaw
 {
     const float w2 = q0 * q0;
     const float x2 = q1 * q1;
@@ -48,20 +74,6 @@ void CalculateEulerAnglesFromQuaternion(float q0, float q1, float q2, float q3, 
         *pitch = asinf(2.0f * abcd / unitLength);
         *yaw   = atan2f(2.0f * adbc, 1.0f - 2.0f * (z2 + x2));
     }
-}
-
-// CoreMotionTestDriver implementation.
-@implementation CoreMotionTestDriver
-{
-@private
-    // The motion manager.
-    CMMotionManager * _motionManager;
-    
-    // The operation queue.
-    NSOperationQueue * _operationQueue;
-    
-    // The Madgwick sensor fusion.
-    MadgwickSensorFusion * _madgwickSensorFusion;
 }
 
 // Class initializer.
@@ -114,21 +126,21 @@ void CalculateEulerAnglesFromQuaternion(float q0, float q1, float q2, float q3, 
         
         // Calculate roll, pitch, yaw.
         float roll, pitch, yaw;
-        CalculateEulerAnglesFromQuaternion([_madgwickSensorFusion q0],
-                                           [_madgwickSensorFusion q1],
-                                           [_madgwickSensorFusion q2],
-                                           [_madgwickSensorFusion q3],
-                                           &roll,
-                                           &pitch,
-                                           &yaw);
-        roll = RadiansToDegrees(roll);
-        pitch = RadiansToDegrees(pitch);
-        yaw = RadiansToDegrees(yaw);
+        [CoreMotionTestDriver calculateEulerAnglesFromQuaternionQ0:[_madgwickSensorFusion q0]
+                                                                Q1:[_madgwickSensorFusion q1]
+                                                                Q2:[_madgwickSensorFusion q2]
+                                                                Q3:[_madgwickSensorFusion q3]
+                                                              roll:&roll
+                                                             pitch:&pitch
+                                                               yaw:&yaw];
+        roll = [CoreMotionTestDriver degreesFromRadians:roll];
+        pitch = [CoreMotionTestDriver degreesFromRadians:pitch];
+        yaw = [CoreMotionTestDriver degreesFromRadians:yaw];
         
         // Obtain CoreMotion roll, pitch and yaw for comparison logging below.
-        float coreMotionRoll = RadiansToDegrees([[motion attitude] roll]);
-        float coreMotionPitch = RadiansToDegrees([[motion attitude] pitch]);
-        float coreMotionYaw = RadiansToDegrees([[motion attitude] yaw]);
+        float coreMotionRoll = [CoreMotionTestDriver degreesFromRadians:[[motion attitude] roll]];
+        float coreMotionPitch = [CoreMotionTestDriver degreesFromRadians:[[motion attitude] pitch]];
+        float coreMotionYaw = [CoreMotionTestDriver degreesFromRadians:[[motion attitude] yaw]];
         
         // Notify the delegate.
         if ([[self delegate] respondsToSelector:@selector(CoreMotionTestDriver:
@@ -141,10 +153,10 @@ void CalculateEulerAnglesFromQuaternion(float q0, float q1, float q2, float q3, 
                                                           magnetometerX:
                                                           magnetometerY:
                                                           magnetometerZ:
-                                                          quaternion0:
-                                                          quaternion1:
-                                                          quaternion2:
-                                                          quaternion3:
+                                                          q0:
+                                                          q1:
+                                                          q2:
+                                                          q3:
                                                           roll:
                                                           pitch:
                                                           yaw:
@@ -153,25 +165,25 @@ void CalculateEulerAnglesFromQuaternion(float q0, float q1, float q2, float q3, 
                                                           coreMotionYaw:)])
         {
             [[self delegate] CoreMotionTestDriver:self
-                                      didUpdateGyroscopeX:[motion rotationRate].x
-                                               gyroscopeY:[motion rotationRate].y
-                                               gyroscopeZ:[motion rotationRate].z
-                                           accelerometerX:[motion gravity].x * -1.0f
-                                           accelerometerY:[motion gravity].y * -1.0f
-                                           accelerometerZ:[motion gravity].z * -1.0f
-                                            magnetometerX:[motion magneticField].field.x
-                                            magnetometerY:[motion magneticField].field.y
-                                            magnetometerZ:[motion magneticField].field.z
-                                              quaternion0:[_madgwickSensorFusion q0]
-                                              quaternion1:[_madgwickSensorFusion q1]
-                                              quaternion2:[_madgwickSensorFusion q2]
-                                              quaternion3:[_madgwickSensorFusion q3]
-                                                     roll:roll
-                                                    pitch:pitch
-                                                      yaw:yaw
-                                           coreMotionRoll:coreMotionRoll
-                                          coreMotionPitch:coreMotionPitch
-                                            coreMotionYaw:coreMotionYaw];
+                              didUpdateGyroscopeX:[motion rotationRate].x
+                                       gyroscopeY:[motion rotationRate].y
+                                       gyroscopeZ:[motion rotationRate].z
+                                   accelerometerX:[motion gravity].x * -1.0f
+                                   accelerometerY:[motion gravity].y * -1.0f
+                                   accelerometerZ:[motion gravity].z * -1.0f
+                                    magnetometerX:[motion magneticField].field.x
+                                    magnetometerY:[motion magneticField].field.y
+                                    magnetometerZ:[motion magneticField].field.z
+                                               q0:[_madgwickSensorFusion q0]
+                                               q1:[_madgwickSensorFusion q1]
+                                               q2:[_madgwickSensorFusion q2]
+                                               q3:[_madgwickSensorFusion q3]
+                                             roll:roll
+                                            pitch:pitch
+                                              yaw:yaw
+                                   coreMotionRoll:coreMotionRoll
+                                  coreMotionPitch:coreMotionPitch
+                                    coreMotionYaw:coreMotionYaw];
         }
     };
 

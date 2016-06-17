@@ -17,6 +17,21 @@
 // Properties.
 @property (nonatomic, weak, nullable) id<CoreMotionTestDriverDelegate> delegate;
 
+// Converts from radians to degrees.
++ (float)degreesFromRadians:(float)radians;
+
+// Converts from degrees to radians.
++ (float)radiansFromDegrees:(float)degrees;
+
+// Calculates Euler angles from quaternion.
++ (void)calculateEulerAnglesFromQuaternionQ0:(float)q0
+                                          Q1:(float)q1
+                                          Q2:(float)q2
+                                          Q3:(float)q3
+                                        roll:(float *)roll
+                                       pitch:(float *)pitch
+                                         yaw:(float *)yaw;
+
 // Class initializer.
 - (nullable instancetype)initSampleFrequencyHz:(float)sampleFrequencyHz
                                           beta:(float)beta;
