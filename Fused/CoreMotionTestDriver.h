@@ -28,9 +28,9 @@
                                           Q1:(float)q1
                                           Q2:(float)q2
                                           Q3:(float)q3
-                                        roll:(float *)roll
-                                       pitch:(float *)pitch
-                                         yaw:(float *)yaw;
+                                        roll:(nonnull float *)roll
+                                       pitch:(nonnull float *)pitch
+                                         yaw:(nonnull float *)yaw;
 
 // Class initializer.
 - (nullable instancetype)initSampleFrequencyHz:(float)sampleFrequencyHz

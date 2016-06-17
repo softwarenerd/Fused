@@ -43,9 +43,9 @@
                                           Q1:(float)q1
                                           Q2:(float)q2
                                           Q3:(float)q3
-                                        roll:(float *)roll
-                                       pitch:(float *)pitch
-                                         yaw:(float *)yaw
+                                        roll:(nonnull float *)roll
+                                       pitch:(nonnull float *)pitch
+                                         yaw:(nonnull float *)yaw
 {
     const float w2 = q0 * q0;
     const float x2 = q1 * q1;
