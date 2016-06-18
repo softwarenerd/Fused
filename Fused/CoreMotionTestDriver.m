@@ -12,6 +12,14 @@
 #import "CoreMotionTestDriver.h"
 #import "MadgwickSensorFusion.h"
 
+// CoreMotionTestDriver (Internal) interface.
+@interface CoreMotionTestDriver (Internal)
+
+// Common initialization.
+- (void)commonInitializationWithSampleFrequencyHz:(float)sampleFrequencyHz;
+
+@end
+
 // CoreMotionTestDriver implementation.
 @implementation CoreMotionTestDriver
 {
@@ -89,20 +97,34 @@
         return nil;
     }
     
-    // Allocate and initialize the motion manager.
-    _motionManager = [[CMMotionManager alloc] init];
-    [_motionManager setShowsDeviceMovementDisplay:YES];
-    [_motionManager setDeviceMotionUpdateInterval:1.0 / sampleFrequencyHz];
-
-    // Allocate and initialize the operation queue.
-    _operationQueue = [[NSOperationQueue alloc] init];
-    [_operationQueue setName:@"DeviceMotion"];
-    [_operationQueue setMaxConcurrentOperationCount:1];
+    // Initialize.
+    [self commonInitializationWithSampleFrequencyHz:sampleFrequencyHz];
     
     // Allocate and initialize the Madgwick sensor fusion.
     _madgwickSensorFusion = [[MadgwickSensorFusion alloc] initWithSampleFrequencyHz:sampleFrequencyHz
                                                                                beta:beta];
 
+    // Done.
+    return self;
+}
+
+// Class initializer.
+- (nullable instancetype)initMahonySensorFusionWithSampleFrequencyHz:(float)sampleFrequencyHz
+                                                               twoKp:(float)twoKp
+                                                               twoKi:(float)twoKi
+{
+    // Initialize superclass.
+    self = [super init];
+    
+    // Handle errors.
+    if (!self)
+    {
+        return nil;
+    }
+    
+    // Initialize.
+    [self commonInitializationWithSampleFrequencyHz:sampleFrequencyHz];
+    
     // Done.
     return self;
 }
@@ -198,6 +220,25 @@
 {
     // Stop motion updates.
     [_motionManager stopDeviceMotionUpdates];
+}
+
+@end
+
+// CoreMotionTestDriver (Internal) implementation
+@implementation CoreMotionTestDriver (Internal)
+
+// Common initialization.
+- (void)commonInitializationWithSampleFrequencyHz:(float)sampleFrequencyHz
+{
+    // Allocate and initialize the motion manager.
+    _motionManager = [[CMMotionManager alloc] init];
+    [_motionManager setShowsDeviceMovementDisplay:YES];
+    [_motionManager setDeviceMotionUpdateInterval:1.0 / sampleFrequencyHz];
+    
+    // Allocate and initialize the operation queue.
+    _operationQueue = [[NSOperationQueue alloc] init];
+    [_operationQueue setName:@"DeviceMotion"];
+    [_operationQueue setMaxConcurrentOperationCount:1];
 }
 
 @end

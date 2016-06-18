@@ -21,6 +21,11 @@
 - (nullable instancetype)initMadgwickSensorFusionWithSampleFrequencyHz:(float)sampleFrequencyHz
                                                                   beta:(float)beta;
 
+// Class initializer.
+- (nullable instancetype)initMahonySensorFusionWithSampleFrequencyHz:(float)sampleFrequencyHz
+                                                               twoKp:(float)twoKp
+                                                               twoKi:(float)twoKi;
+
 // Converts from radians to degrees.
 + (float)degreesFromRadians:(float)radians;
 
