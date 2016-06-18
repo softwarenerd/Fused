@@ -117,9 +117,9 @@
         [_madgwickSensorFusion updateWithGyroscopeX:(float)[motion rotationRate].x
                                          gyroscopeY:(float)[motion rotationRate].y
                                          gyroscopeZ:(float)[motion rotationRate].z
-                                     accelerometerX:(float)[motion gravity].x * -1.0f   // Accelerometer angles inverted.
-                                     accelerometerY:(float)[motion gravity].y * -1.0f   // Accelerometer angles inverted.
-                                     accelerometerZ:(float)[motion gravity].z * -1.0f   // Accelerometer angles inverted.
+                                     accelerometerX:(float)[motion gravity].x * -1.0    // Accelerometer angles inverted.
+                                     accelerometerY:(float)[motion gravity].y * -1.0    // Accelerometer angles inverted.
+                                     accelerometerZ:(float)[motion gravity].z * -1.0    // Accelerometer angles inverted.
                                       magnetometerX:(float)[motion magneticField].field.x
                                       magnetometerY:(float)[motion magneticField].field.y
                                       magnetometerZ:(float)[motion magneticField].field.z];
