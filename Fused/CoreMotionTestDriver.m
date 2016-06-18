@@ -40,9 +40,9 @@
 
 // Calculates Euler angles from quaternion.
 + (void)calculateEulerAnglesFromQuaternionQ0:(float)q0
-                                          Q1:(float)q1
-                                          Q2:(float)q2
-                                          Q3:(float)q3
+                                          q1:(float)q1
+                                          q2:(float)q2
+                                          q3:(float)q3
                                         roll:(nonnull float *)roll
                                        pitch:(nonnull float *)pitch
                                          yaw:(nonnull float *)yaw
@@ -117,9 +117,9 @@
         [_madgwickSensorFusion updateWithGyroscopeX:(float)[motion rotationRate].x
                                          gyroscopeY:(float)[motion rotationRate].y
                                          gyroscopeZ:(float)[motion rotationRate].z
-                                     accelerometerX:(float)[motion gravity].x * -1.0f
-                                     accelerometerY:(float)[motion gravity].y * -1.0f
-                                     accelerometerZ:(float)[motion gravity].z * -1.0f
+                                     accelerometerX:(float)[motion gravity].x * -1.0f   // Accelerometer angles inverted.
+                                     accelerometerY:(float)[motion gravity].y * -1.0f   // Accelerometer angles inverted.
+                                     accelerometerZ:(float)[motion gravity].z * -1.0f   // Accelerometer angles inverted.
                                       magnetometerX:(float)[motion magneticField].field.x
                                       magnetometerY:(float)[motion magneticField].field.y
                                       magnetometerZ:(float)[motion magneticField].field.z];
@@ -127,9 +127,9 @@
         // Calculate roll, pitch, yaw.
         float roll, pitch, yaw;
         [CoreMotionTestDriver calculateEulerAnglesFromQuaternionQ0:[_madgwickSensorFusion q0]
-                                                                Q1:[_madgwickSensorFusion q1]
-                                                                Q2:[_madgwickSensorFusion q2]
-                                                                Q3:[_madgwickSensorFusion q3]
+                                                                q1:[_madgwickSensorFusion q1]
+                                                                q2:[_madgwickSensorFusion q2]
+                                                                q3:[_madgwickSensorFusion q3]
                                                               roll:&roll
                                                              pitch:&pitch
                                                                yaw:&yaw];

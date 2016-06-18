@@ -17,6 +17,10 @@
 // Properties.
 @property (nonatomic, weak, nullable) id<CoreMotionTestDriverDelegate> delegate;
 
+// Class initializer.
+- (nullable instancetype)initMadgwickSensorFusionWithSampleFrequencyHz:(float)sampleFrequencyHz
+                                                                  beta:(float)beta;
+
 // Converts from radians to degrees.
 + (float)degreesFromRadians:(float)radians;
 
@@ -25,16 +29,12 @@
 
 // Calculates Euler angles from quaternion.
 + (void)calculateEulerAnglesFromQuaternionQ0:(float)q0
-                                          Q1:(float)q1
-                                          Q2:(float)q2
-                                          Q3:(float)q3
+                                          q1:(float)q1
+                                          q2:(float)q2
+                                          q3:(float)q3
                                         roll:(nonnull float *)roll
                                        pitch:(nonnull float *)pitch
                                          yaw:(nonnull float *)yaw;
-
-// Class initializer.
-- (nullable instancetype)initMadgwickSensorFusionWithSampleFrequencyHz:(float)sampleFrequencyHz
-                                                                  beta:(float)beta;
 
 // Starts the driver.
 - (void)start;
