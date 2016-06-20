@@ -14,10 +14,10 @@
 //
 
 @import Foundation;
-#include "SensorFusion.h"
+#include "SensorFusionProcessor.h"
 
 // MadgwickSensorFusion interface.
-@interface MadgwickSensorFusion : NSObject <SensorFusion>
+@interface MadgwickSensorFusion : NSObject <SensorFusionProcessor>
 
 // Quaternion properties.
 @property (nonatomic, readonly) float q0;

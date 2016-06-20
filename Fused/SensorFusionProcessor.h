@@ -1,13 +1,13 @@
 //
-//  SensorFusion.h
+//  SensorFusionProcessor.h
 //  Fused
 //
 //  Created by Brian Lambert on 6/20/16.
 //  Copyright © 2016 Brian Lambert. All rights reserved.
 //
 
-// SensorFusion protocol.
-@protocol SensorFusion <NSObject>
+// SensorFusionProcessor protocol.
+@protocol SensorFusionProcessor <NSObject>
 
 // Quaternion properties.
 @property (nonatomic, readonly) float q0;

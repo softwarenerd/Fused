@@ -14,10 +14,10 @@
 //
 
 @import Foundation;
-#include "SensorFusion.h"
+#include "SensorFusionProcessor.h"
 
 // MahonySensorFusion interface.
-@interface MahonySensorFusion : NSObject <SensorFusion>
+@interface MahonySensorFusion : NSObject <SensorFusionProcessor>
 
 // Quaternion properties.
 @property (nonatomic, readonly) float q0;
@@ -27,7 +27,8 @@
 
 // Class initializer.
 - (nullable instancetype)initWithSampleFrequencyHz:(float)sampleFrequencyHz
-                                              beta:(float)beta;
+                                             twoKp:(float)twoKp
+                                             twoKi:(float)twoKi;
 
 // Update with gyroscope and accelerometer.
 - (void)updateWithGyroscopeX:(float)gx

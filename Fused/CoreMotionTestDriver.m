@@ -30,8 +30,8 @@
     // The operation queue.
     NSOperationQueue * _operationQueue;
     
-    // The Madgwick sensor fusion.
-    MadgwickSensorFusion * _madgwickSensorFusion;
+    // The sensor fusion processor.
+    NSObject<SensorFusionProcessor> * _sensorFusionProcessor;
 }
 
 // Converts from radians to degrees.
@@ -101,8 +101,8 @@
     [self commonInitializationWithSampleFrequencyHz:sampleFrequencyHz];
     
     // Allocate and initialize the Madgwick sensor fusion.
-    _madgwickSensorFusion = [[MadgwickSensorFusion alloc] initWithSampleFrequencyHz:sampleFrequencyHz
-                                                                               beta:beta];
+    _sensorFusionProcessor = [[MadgwickSensorFusion alloc] initWithSampleFrequencyHz:sampleFrequencyHz
+                                                                                beta:beta];
 
     // Done.
     return self;
@@ -135,8 +135,8 @@
     // The device motion handler.
     CMDeviceMotionHandler handler = ^(CMDeviceMotion * _Nullable motion, NSError * _Nullable error)
     {
-        // Employ Madgwick AHRS sensor fusion.
-        [_madgwickSensorFusion updateWithGyroscopeX:(float)[motion rotationRate].x
+        // Perform sensor fusion.
+        [_sensorFusionProcessor updateWithGyroscopeX:(float)[motion rotationRate].x
                                          gyroscopeY:(float)[motion rotationRate].y
                                          gyroscopeZ:(float)[motion rotationRate].z
                                      accelerometerX:(float)[motion gravity].x * -1.0    // Accelerometer angles inverted.
@@ -148,10 +148,10 @@
         
         // Calculate roll, pitch, yaw.
         float roll, pitch, yaw;
-        [CoreMotionTestDriver calculateEulerAnglesFromQuaternionQ0:[_madgwickSensorFusion q0]
-                                                                q1:[_madgwickSensorFusion q1]
-                                                                q2:[_madgwickSensorFusion q2]
-                                                                q3:[_madgwickSensorFusion q3]
+        [CoreMotionTestDriver calculateEulerAnglesFromQuaternionQ0:[_sensorFusionProcessor q0]
+                                                                q1:[_sensorFusionProcessor q1]
+                                                                q2:[_sensorFusionProcessor q2]
+                                                                q3:[_sensorFusionProcessor q3]
                                                               roll:&roll
                                                              pitch:&pitch
                                                                yaw:&yaw];
@@ -196,10 +196,10 @@
                                     magnetometerX:[motion magneticField].field.x
                                     magnetometerY:[motion magneticField].field.y
                                     magnetometerZ:[motion magneticField].field.z
-                                               q0:[_madgwickSensorFusion q0]
-                                               q1:[_madgwickSensorFusion q1]
-                                               q2:[_madgwickSensorFusion q2]
-                                               q3:[_madgwickSensorFusion q3]
+                                               q0:[_sensorFusionProcessor q0]
+                                               q1:[_sensorFusionProcessor q1]
+                                               q2:[_sensorFusionProcessor q2]
+                                               q3:[_sensorFusionProcessor q3]
                                              roll:roll
                                             pitch:pitch
                                               yaw:yaw
