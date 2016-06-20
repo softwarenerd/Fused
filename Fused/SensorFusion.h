@@ -1,33 +1,19 @@
 //
-//  MadgwickSensorFusion.h
+//  SensorFusion.h
 //  Fused
 //
-//  Implementation of Madgwick's IMU and AHRS algorithms.
-//  See: http://www.x-io.co.uk/open-source-imu-and-ahrs-algorithms/
-//
-//  Date       Author          Notes
-//  --------------------------------------------------------------------------------------------------
-//  29/09/2011 SOH Madgwick    Initial release
-//  02/10/2011 SOH Madgwick    Optimised for reduced CPU load
-//  19/02/2012 SOH Madgwick    Magnetometer measurement is normalised
-//  02/06/2016 Brian Lambert   Ported to Objective-C.
+//  Created by Brian Lambert on 6/20/16.
+//  Copyright © 2016 Brian Lambert. All rights reserved.
 //
 
-@import Foundation;
-#include "SensorFusion.h"
-
-// MadgwickSensorFusion interface.
-@interface MadgwickSensorFusion : NSObject <SensorFusion>
+// SensorFusion protocol.
+@protocol SensorFusion <NSObject>
 
 // Quaternion properties.
 @property (nonatomic, readonly) float q0;
 @property (nonatomic, readonly) float q1;
 @property (nonatomic, readonly) float q2;
 @property (nonatomic, readonly) float q3;
-
-// Class initializer.
-- (nullable instancetype)initWithSampleFrequencyHz:(float)sampleFrequencyHz
-                                              beta:(float)beta;
 
 // Update with gyroscope and accelerometer.
 - (void)updateWithGyroscopeX:(float)gx

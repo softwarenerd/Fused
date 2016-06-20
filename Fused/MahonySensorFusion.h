@@ -1,8 +1,8 @@
 //
-//  MadgwickSensorFusion.h
+//  MahonySensorFusion.h
 //  Fused
 //
-//  Implementation of Madgwick's IMU and AHRS algorithms.
+//  Implementation of Mahony IMU and AHRS algorithms.
 //  See: http://www.x-io.co.uk/open-source-imu-and-ahrs-algorithms/
 //
 //  Date       Author          Notes
@@ -16,8 +16,8 @@
 @import Foundation;
 #include "SensorFusion.h"
 
-// MadgwickSensorFusion interface.
-@interface MadgwickSensorFusion : NSObject <SensorFusion>
+// MahonySensorFusion interface.
+@interface MahonySensorFusion : NSObject <SensorFusion>
 
 // Quaternion properties.
 @property (nonatomic, readonly) float q0;
