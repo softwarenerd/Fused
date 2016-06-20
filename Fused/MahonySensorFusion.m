@@ -7,10 +7,9 @@
 //
 //  Date       Author          Notes
 //  --------------------------------------------------------------------------------------------------
-//  29/09/2011 SOH Madgwick    Initial release
-//  02/10/2011 SOH Madgwick    Optimised for reduced CPU load
-//  19/02/2012 SOH Madgwick    Magnetometer measurement is normalised
-//  02/06/2016 Brian Lambert   Ported to Objective-C.
+//  29/09/2011	SOH Madgwick    Initial release
+//  02/10/2011	SOH Madgwick	Optimised for reduced CPU load
+//  02/06/2016  Brian Lambert   Ported to Objective-C.
 //
 
 #include <math.h>
