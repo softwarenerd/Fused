@@ -11,6 +11,7 @@
 #import <CoreMotion/CoreMotion.h>
 #import "CoreMotionTestDriver.h"
 #import "MadgwickSensorFusion.h"
+#import "MahonySensorFusion.h"
 
 // CoreMotionTestDriver (Internal) interface.
 @interface CoreMotionTestDriver (Internal)
@@ -124,6 +125,11 @@
     
     // Initialize.
     [self commonInitializationWithSampleFrequencyHz:sampleFrequencyHz];
+    
+    // Allocate and initialize the Mahony sensor fusion.
+    _sensorFusionProcessor = [[MahonySensorFusion alloc] initWithSampleFrequencyHz:sampleFrequencyHz
+                                                                             twoKp:twoKp
+                                                                             twoKi:twoKi];
     
     // Done.
     return self;
