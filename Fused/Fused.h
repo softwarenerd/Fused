@@ -15,5 +15,7 @@ FOUNDATION_EXPORT double FusedVersionNumber;
 FOUNDATION_EXPORT const unsigned char FusedVersionString[];
 
 // Public headers.
+#import <Fused/MadgwickSensorFusion.h>
+#import <Fused/MahonySensorFusion.h>
 #import <Fused/CoreMotionTestDriver.h>
 
