@@ -13,10 +13,9 @@
 //
 
 @import Foundation;
-#include "SensorFusionProcessor.h"
 
 // MahonySensorFusion interface.
-@interface MahonySensorFusion : NSObject <SensorFusionProcessor>
+@interface MahonySensorFusion : NSObject
 
 // Quaternion properties.
 @property (nonatomic, readonly) float q0;

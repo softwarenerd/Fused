@@ -17,7 +17,6 @@
 		D349BB461D1449FC00CDD28A /* MadgwickSensorFusion.m in Sources */ = {isa = PBXBuildFile; fileRef = D349BB441D1449FC00CDD28A /* MadgwickSensorFusion.m */; };
 		D3547E741D18377200B1339E /* MahonySensorFusion.h in Headers */ = {isa = PBXBuildFile; fileRef = D3547E721D18377200B1339E /* MahonySensorFusion.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D3547E751D18377200B1339E /* MahonySensorFusion.m in Sources */ = {isa = PBXBuildFile; fileRef = D3547E731D18377200B1339E /* MahonySensorFusion.m */; };
-		D3E5AA6E1D18B79A002DB8E6 /* SensorFusionProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = D3547E761D18388000B1339E /* SensorFusionProcessor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,7 +43,6 @@
 		D349BB441D1449FC00CDD28A /* MadgwickSensorFusion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MadgwickSensorFusion.m; sourceTree = "<group>"; };
 		D3547E721D18377200B1339E /* MahonySensorFusion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MahonySensorFusion.h; sourceTree = "<group>"; };
 		D3547E731D18377200B1339E /* MahonySensorFusion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MahonySensorFusion.m; sourceTree = "<group>"; };
-		D3547E761D18388000B1339E /* SensorFusionProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SensorFusionProcessor.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,7 +94,6 @@
 				D349BB441D1449FC00CDD28A /* MadgwickSensorFusion.m */,
 				D3547E721D18377200B1339E /* MahonySensorFusion.h */,
 				D3547E731D18377200B1339E /* MahonySensorFusion.m */,
-				D3547E761D18388000B1339E /* SensorFusionProcessor.h */,
 			);
 			path = Fused;
 			sourceTree = "<group>";
@@ -120,7 +117,6 @@
 				D349BB271D14407E00CDD28A /* Fused.h in Headers */,
 				D349BB451D1449FC00CDD28A /* MadgwickSensorFusion.h in Headers */,
 				D349BB401D1449F300CDD28A /* CoreMotionTestDriver.h in Headers */,
-				D3E5AA6E1D18B79A002DB8E6 /* SensorFusionProcessor.h in Headers */,
 				D3547E741D18377200B1339E /* MahonySensorFusion.h in Headers */,
 				D349BB421D1449F300CDD28A /* CoreMotionTestDriverDelegate.h in Headers */,
 			);

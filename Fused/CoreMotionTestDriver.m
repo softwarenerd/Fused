@@ -31,8 +31,11 @@
     // The operation queue.
     NSOperationQueue * _operationQueue;
     
-    // The sensor fusion processor.
-    NSObject<SensorFusionProcessor> * _sensorFusionProcessor;
+    // The Madgwick sensor fusion processor.
+    MadgwickSensorFusion * _madgwickSensorFusion;
+    
+    // The Mahony sensor fusion processor.
+    MahonySensorFusion * _mahonySensorFusion;
 }
 
 // Converts from radians to degrees.
@@ -102,8 +105,8 @@
     [self commonInitializationWithSampleFrequencyHz:sampleFrequencyHz];
     
     // Allocate and initialize the Madgwick sensor fusion.
-    _sensorFusionProcessor = [[MadgwickSensorFusion alloc] initWithSampleFrequencyHz:sampleFrequencyHz
-                                                                                beta:beta];
+    _madgwickSensorFusion = [[MadgwickSensorFusion alloc] initWithSampleFrequencyHz:sampleFrequencyHz
+                                                                               beta:beta];
 
     // Done.
     return self;
@@ -127,9 +130,9 @@
     [self commonInitializationWithSampleFrequencyHz:sampleFrequencyHz];
     
     // Allocate and initialize the Mahony sensor fusion.
-    _sensorFusionProcessor = [[MahonySensorFusion alloc] initWithSampleFrequencyHz:sampleFrequencyHz
-                                                                             twoKp:twoKp
-                                                                             twoKi:twoKi];
+    _mahonySensorFusion = [[MahonySensorFusion alloc] initWithSampleFrequencyHz:sampleFrequencyHz
+                                                                          twoKp:twoKp
+                                                                          twoKi:twoKi];
     
     // Done.
     return self;
@@ -138,26 +141,26 @@
 // Starts the driver.
 - (void)start
 {
-    // The device motion handler.
-    CMDeviceMotionHandler handler = ^(CMDeviceMotion * _Nullable motion, NSError * _Nullable error)
+    // The Madgwick device motion handler.
+    CMDeviceMotionHandler madgwickhandler = ^(CMDeviceMotion * _Nullable motion, NSError * _Nullable error)
     {
         // Perform sensor fusion.
-        [_sensorFusionProcessor updateWithGyroscopeX:(float)[motion rotationRate].x
+        [_madgwickSensorFusion updateWithGyroscopeX:(float)[motion rotationRate].x
                                          gyroscopeY:(float)[motion rotationRate].y
                                          gyroscopeZ:(float)[motion rotationRate].z
-                                     accelerometerX:(float)[motion gravity].x * -1.0    // Accelerometer angles inverted.
-                                     accelerometerY:(float)[motion gravity].y * -1.0    // Accelerometer angles inverted.
-                                     accelerometerZ:(float)[motion gravity].z * -1.0    // Accelerometer angles inverted.
+                                     accelerometerX:(float)[motion gravity].x * -1.0    // Accelerometer angles are inverted.
+                                     accelerometerY:(float)[motion gravity].y * -1.0    // Accelerometer angles are inverted.
+                                     accelerometerZ:(float)[motion gravity].z * -1.0    // Accelerometer angles are inverted.
                                       magnetometerX:(float)[motion magneticField].field.x
                                       magnetometerY:(float)[motion magneticField].field.y
                                       magnetometerZ:(float)[motion magneticField].field.z];
         
         // Calculate roll, pitch, yaw.
         float roll, pitch, yaw;
-        [CoreMotionTestDriver calculateEulerAnglesFromQuaternionQ0:[_sensorFusionProcessor q0]
-                                                                q1:[_sensorFusionProcessor q1]
-                                                                q2:[_sensorFusionProcessor q2]
-                                                                q3:[_sensorFusionProcessor q3]
+        [CoreMotionTestDriver calculateEulerAnglesFromQuaternionQ0:[_madgwickSensorFusion q0]
+                                                                q1:[_madgwickSensorFusion q1]
+                                                                q2:[_madgwickSensorFusion q2]
+                                                                q3:[_madgwickSensorFusion q3]
                                                               roll:&roll
                                                              pitch:&pitch
                                                                yaw:&yaw];
@@ -202,10 +205,87 @@
                                     magnetometerX:[motion magneticField].field.x
                                     magnetometerY:[motion magneticField].field.y
                                     magnetometerZ:[motion magneticField].field.z
-                                               q0:[_sensorFusionProcessor q0]
-                                               q1:[_sensorFusionProcessor q1]
-                                               q2:[_sensorFusionProcessor q2]
-                                               q3:[_sensorFusionProcessor q3]
+                                               q0:[_madgwickSensorFusion q0]
+                                               q1:[_madgwickSensorFusion q1]
+                                               q2:[_madgwickSensorFusion q2]
+                                               q3:[_madgwickSensorFusion q3]
+                                             roll:roll
+                                            pitch:pitch
+                                              yaw:yaw
+                                   coreMotionRoll:coreMotionRoll
+                                  coreMotionPitch:coreMotionPitch
+                                    coreMotionYaw:coreMotionYaw];
+        }
+    };
+
+    // The Mahony device motion handler.
+    CMDeviceMotionHandler mahonyHandlerhandler = ^(CMDeviceMotion * _Nullable motion, NSError * _Nullable error)
+    {
+        // Perform sensor fusion.
+        [_mahonySensorFusion updateWithGyroscopeX:(float)[motion rotationRate].x
+                                       gyroscopeY:(float)[motion rotationRate].y
+                                       gyroscopeZ:(float)[motion rotationRate].z
+                                   accelerometerX:(float)[motion gravity].x * -1.0    // Accelerometer angles inverted.
+                                   accelerometerY:(float)[motion gravity].y * -1.0    // Accelerometer angles inverted.
+                                   accelerometerZ:(float)[motion gravity].z * -1.0    // Accelerometer angles inverted.
+                                    magnetometerX:(float)[motion magneticField].field.x
+                                    magnetometerY:(float)[motion magneticField].field.y
+                                    magnetometerZ:(float)[motion magneticField].field.z];
+        
+        // Calculate roll, pitch, yaw.
+        float roll, pitch, yaw;
+        [CoreMotionTestDriver calculateEulerAnglesFromQuaternionQ0:[_mahonySensorFusion q0]
+                                                                q1:[_mahonySensorFusion q1]
+                                                                q2:[_mahonySensorFusion q2]
+                                                                q3:[_mahonySensorFusion q3]
+                                                              roll:&roll
+                                                             pitch:&pitch
+                                                               yaw:&yaw];
+        roll = [CoreMotionTestDriver degreesFromRadians:roll];
+        pitch = [CoreMotionTestDriver degreesFromRadians:pitch];
+        yaw = [CoreMotionTestDriver degreesFromRadians:yaw];
+        
+        // Obtain CoreMotion roll, pitch and yaw for comparison logging below.
+        float coreMotionRoll = [CoreMotionTestDriver degreesFromRadians:[[motion attitude] roll]];
+        float coreMotionPitch = [CoreMotionTestDriver degreesFromRadians:[[motion attitude] pitch]];
+        float coreMotionYaw = [CoreMotionTestDriver degreesFromRadians:[[motion attitude] yaw]];
+        
+        // Notify the delegate.
+        if ([[self delegate] respondsToSelector:@selector(coreMotionTestDriver:
+                                                          didUpdateGyroscopeX:
+                                                          gyroscopeY:
+                                                          gyroscopeZ:
+                                                          accelerometerX:
+                                                          accelerometerY:
+                                                          accelerometerZ:
+                                                          magnetometerX:
+                                                          magnetometerY:
+                                                          magnetometerZ:
+                                                          q0:
+                                                          q1:
+                                                          q2:
+                                                          q3:
+                                                          roll:
+                                                          pitch:
+                                                          yaw:
+                                                          coreMotionRoll:
+                                                          coreMotionPitch:
+                                                          coreMotionYaw:)])
+        {
+            [[self delegate] coreMotionTestDriver:self
+                              didUpdateGyroscopeX:[motion rotationRate].x
+                                       gyroscopeY:[motion rotationRate].y
+                                       gyroscopeZ:[motion rotationRate].z
+                                   accelerometerX:[motion gravity].x * -1.0f
+                                   accelerometerY:[motion gravity].y * -1.0f
+                                   accelerometerZ:[motion gravity].z * -1.0f
+                                    magnetometerX:[motion magneticField].field.x
+                                    magnetometerY:[motion magneticField].field.y
+                                    magnetometerZ:[motion magneticField].field.z
+                                               q0:[_mahonySensorFusion q0]
+                                               q1:[_mahonySensorFusion q1]
+                                               q2:[_mahonySensorFusion q2]
+                                               q3:[_mahonySensorFusion q3]
                                              roll:roll
                                             pitch:pitch
                                               yaw:yaw
@@ -218,7 +298,7 @@
     // Start motion updates.
     [_motionManager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXMagneticNorthZVertical
                                                         toQueue:_operationQueue
-                                                    withHandler:handler];
+                                                    withHandler:_madgwickSensorFusion ? madgwickhandler : mahonyHandlerhandler];
 }
 
 // Stops the driver.
