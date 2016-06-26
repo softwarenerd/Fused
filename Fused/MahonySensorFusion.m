@@ -16,15 +16,9 @@
 #import "MahonySensorFusion.h"
 
 // Inverse square root.
-static inline float invSqrt(float x)
+static inline float invsqrtf(float x)
 {
     return 1.0f / sqrtf(x);
-//    float xhalf = 0.5f * x;
-//    int i = *(int*)&x;              // get bits for floating value
-//    i = 0x5f375a86 - (i >> 1);      // gives initial guess y0
-//    x = *(float*)&i;                // convert bits back to float
-//    x = x * (1.5f - xhalf * x * x); // Newton step, repeating increases accuracy
-//    return x;
 }
 
 // MahonySensorFusion implementation.
@@ -89,7 +83,7 @@ static inline float invSqrt(float x)
     if (!((ax == 0.0f) && (ay == 0.0f) && (az == 0.0f)))
     {
         // Normalise accelerometer measurement
-        recipNorm = invSqrt(ax * ax + ay * ay + az * az);
+        recipNorm = invsqrtf(ax * ax + ay * ay + az * az);
         ax *= recipNorm;
         ay *= recipNorm;
         az *= recipNorm;
@@ -140,7 +134,7 @@ static inline float invSqrt(float x)
     _q3 += (qa * gz + qb * gy - qc * gx);
     
     // Normalise quaternion
-    recipNorm = invSqrt(_q0 * _q0 + _q1 * _q1 + _q2 * _q2 + _q3 * _q3);
+    recipNorm = invsqrtf(_q0 * _q0 + _q1 * _q1 + _q2 * _q2 + _q3 * _q3);
     _q0 *= recipNorm;
     _q1 *= recipNorm;
     _q2 *= recipNorm;
@@ -181,13 +175,13 @@ static inline float invSqrt(float x)
     if (!((ax == 0.0f) && (ay == 0.0f) && (az == 0.0f)))
     {
         // Normalise accelerometer measurement
-        recipNorm = invSqrt(ax * ax + ay * ay + az * az);
+        recipNorm = invsqrtf(ax * ax + ay * ay + az * az);
         ax *= recipNorm;
         ay *= recipNorm;
         az *= recipNorm;
         
         // Normalise magnetometer measurement
-        recipNorm = invSqrt(mx * mx + my * my + mz * mz);
+        recipNorm = invsqrtf(mx * mx + my * my + mz * mz);
         mx *= recipNorm;
         my *= recipNorm;
         mz *= recipNorm;
@@ -259,7 +253,7 @@ static inline float invSqrt(float x)
     _q3 += (qa * gz + qb * gy - qc * gx);
     
     // Normalise quaternion
-    recipNorm = invSqrt(_q0 * _q0 + _q1 * _q1 + _q2 * _q2 + _q3 * _q3);
+    recipNorm = invsqrtf(_q0 * _q0 + _q1 * _q1 + _q2 * _q2 + _q3 * _q3);
     _q0 *= recipNorm;
     _q1 *= recipNorm;
     _q2 *= recipNorm;
