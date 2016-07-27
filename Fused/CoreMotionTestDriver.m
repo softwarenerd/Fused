@@ -17,7 +17,7 @@
 @interface CoreMotionTestDriver (Internal)
 
 // Common initialization.
-- (void)commonInitializationWithCoreMotionSamplingFrequencyHz:(NSUInteger)coreMotionSampleFrequencyHz
+- (void)commonInitializationWithCoreMotionSamplingFrequencyHz:(NSUInteger)coreMotionSamplingFrequencyHz
                           sensorFusionOversamplingFrequencyHz:(NSUInteger)sensorFusionOversamplingFrequencyHz;
 
 @end
@@ -331,17 +331,17 @@
 @implementation CoreMotionTestDriver (Internal)
 
 // Common initialization.
-- (void)commonInitializationWithCoreMotionSampleFrequencyHz:(NSUInteger)coreMotionSampleFrequencyHz
-                        sensorFusionOversamplingFrequencyHz:(NSUInteger)sensorFusionOversamplingFrequencyHz
+- (void)commonInitializationWithCoreMotionSamplingFrequencyHz:(NSUInteger)coreMotionSamplingFrequencyHz
+                          sensorFusionOversamplingFrequencyHz:(NSUInteger)sensorFusionOversamplingFrequencyHz;
 {
     // Initialize sampling rates.
-    _coreMotionSamplingFrequencyHz = coreMotionSampleFrequencyHz;
-    _sensorFusionOversamplingFrequencyHz = MAX(coreMotionSampleFrequencyHz, sensorFusionOversamplingFrequencyHz);
+    _coreMotionSamplingFrequencyHz = coreMotionSamplingFrequencyHz;
+    _sensorFusionOversamplingFrequencyHz = MAX(coreMotionSamplingFrequencyHz, sensorFusionOversamplingFrequencyHz);
     
     // Allocate and initialize the motion manager.
     _motionManager = [[CMMotionManager alloc] init];
     [_motionManager setShowsDeviceMovementDisplay:YES];
-    [_motionManager setDeviceMotionUpdateInterval:1.0 / (NSTimeInterval)coreMotionSampleFrequencyHz];
+    [_motionManager setDeviceMotionUpdateInterval:1.0 / (NSTimeInterval)coreMotionSamplingFrequencyHz];
     
     // Allocate and initialize the operation queue.
     _operationQueue = [[NSOperationQueue alloc] init];
