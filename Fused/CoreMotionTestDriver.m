@@ -17,7 +17,8 @@
 @interface CoreMotionTestDriver (Internal)
 
 // Common initialization.
-- (void)commonInitializationWithSampleFrequencyHz:(float)sampleFrequencyHz;
+- (void)commonInitializationWithCoreMotionSamplingFrequencyHz:(NSUInteger)coreMotionSampleFrequencyHz
+                          sensorFusionOversamplingFrequencyHz:(NSUInteger)sensorFusionOversamplingFrequencyHz;
 
 @end
 
@@ -30,6 +31,12 @@
     
     // The operation queue.
     NSOperationQueue * _operationQueue;
+    
+    // The Core Motion sampling frquency in Hz.
+    NSUInteger _coreMotionSamplingFrequencyHz;
+    
+    // The sensor fusion oversampling frequency in Hz.
+    NSUInteger _sensorFusionOversamplingFrequencyHz;
     
     // The Madgwick sensor fusion processor.
     MadgwickSensorFusion * _madgwickSensorFusion;
@@ -89,8 +96,9 @@
 }
 
 // Class initializer.
-- (nullable instancetype)initMadgwickSensorFusionWithSampleFrequencyHz:(float)sampleFrequencyHz
-                                                                  beta:(float)beta
+- (nullable instancetype)initMadgwickSensorFusionWithCoreMotionSamplingFrequencyHz:(NSUInteger)coreMotionSamplingFrequencyHz
+                                             sensorFusionOversamplingFrequencyHz:(NSUInteger)sensorFusionOversamplingFrequencyHz
+                                                                            beta:(float)beta
 {
     // Initialize superclass.
     self = [super init];
@@ -102,10 +110,11 @@
     }
     
     // Initialize.
-    [self commonInitializationWithSampleFrequencyHz:sampleFrequencyHz];
+    [self commonInitializationWithCoreMotionSamplingFrequencyHz:coreMotionSamplingFrequencyHz
+                            sensorFusionOversamplingFrequencyHz:sensorFusionOversamplingFrequencyHz];
     
     // Allocate and initialize the Madgwick sensor fusion.
-    _madgwickSensorFusion = [[MadgwickSensorFusion alloc] initWithSampleFrequencyHz:sampleFrequencyHz
+    _madgwickSensorFusion = [[MadgwickSensorFusion alloc] initWithSampleFrequencyHz:(float)sensorFusionOversamplingFrequencyHz
                                                                                beta:beta];
 
     // Done.
@@ -113,9 +122,10 @@
 }
 
 // Class initializer.
-- (nullable instancetype)initMahonySensorFusionWithSampleFrequencyHz:(float)sampleFrequencyHz
-                                                               twoKp:(float)twoKp
-                                                               twoKi:(float)twoKi
+- (nullable instancetype)initMahonySensorFusionWithCoreMotionSamplingFrequencyHz:(NSUInteger)coreMotionSamplingFrequencyHz
+                                             sensorFusionOversamplingFrequencyHz:(NSUInteger)sensorFusionOversamplingFrequencyHz
+                                                                           twoKp:(float)twoKp
+                                                                           twoKi:(float)twoKi
 {
     // Initialize superclass.
     self = [super init];
@@ -127,10 +137,11 @@
     }
     
     // Initialize.
-    [self commonInitializationWithSampleFrequencyHz:sampleFrequencyHz];
+    [self commonInitializationWithCoreMotionSamplingFrequencyHz:coreMotionSamplingFrequencyHz
+                            sensorFusionOversamplingFrequencyHz:sensorFusionOversamplingFrequencyHz];
     
     // Allocate and initialize the Mahony sensor fusion.
-    _mahonySensorFusion = [[MahonySensorFusion alloc] initWithSampleFrequencyHz:sampleFrequencyHz
+    _mahonySensorFusion = [[MahonySensorFusion alloc] initWithSampleFrequencyHz:(float)sensorFusionOversamplingFrequencyHz
                                                                           twoKp:twoKp
                                                                           twoKi:twoKi];
     
@@ -145,15 +156,18 @@
     CMDeviceMotionHandler madgwickhandler = ^(CMDeviceMotion * _Nullable motion, NSError * _Nullable error)
     {
         // Perform sensor fusion.
-        [_madgwickSensorFusion updateWithGyroscopeX:(float)[motion rotationRate].x
-                                         gyroscopeY:(float)[motion rotationRate].y
-                                         gyroscopeZ:(float)[motion rotationRate].z
-                                     accelerometerX:(float)[motion gravity].x * -1.0    // Accelerometer angles are inverted.
-                                     accelerometerY:(float)[motion gravity].y * -1.0    // Accelerometer angles are inverted.
-                                     accelerometerZ:(float)[motion gravity].z * -1.0    // Accelerometer angles are inverted.
-                                      magnetometerX:(float)[motion magneticField].field.x
-                                      magnetometerY:(float)[motion magneticField].field.y
-                                      magnetometerZ:(float)[motion magneticField].field.z];
+        for (NSUInteger i = 0; i < _sensorFusionOversamplingFrequencyHz / _coreMotionSamplingFrequencyHz; i++)
+        {
+            [_madgwickSensorFusion updateWithGyroscopeX:(float)[motion rotationRate].x
+                                             gyroscopeY:(float)[motion rotationRate].y
+                                             gyroscopeZ:(float)[motion rotationRate].z
+                                         accelerometerX:(float)[motion gravity].x * -1.0    // Accelerometer angles are inverted.
+                                         accelerometerY:(float)[motion gravity].y * -1.0    // Accelerometer angles are inverted.
+                                         accelerometerZ:(float)[motion gravity].z * -1.0    // Accelerometer angles are inverted.
+                                          magnetometerX:(float)[motion magneticField].field.x
+                                          magnetometerY:(float)[motion magneticField].field.y
+                                          magnetometerZ:(float)[motion magneticField].field.z];
+        }
         
         // Calculate roll, pitch, yaw.
         float roll, pitch, yaw;
@@ -222,15 +236,18 @@
     CMDeviceMotionHandler mahonyHandlerhandler = ^(CMDeviceMotion * _Nullable motion, NSError * _Nullable error)
     {
         // Perform sensor fusion.
-        [_mahonySensorFusion updateWithGyroscopeX:(float)[motion rotationRate].x
-                                       gyroscopeY:(float)[motion rotationRate].y
-                                       gyroscopeZ:(float)[motion rotationRate].z
-                                   accelerometerX:(float)[motion gravity].x * -1.0    // Accelerometer angles inverted.
-                                   accelerometerY:(float)[motion gravity].y * -1.0    // Accelerometer angles inverted.
-                                   accelerometerZ:(float)[motion gravity].z * -1.0    // Accelerometer angles inverted.
-                                    magnetometerX:(float)[motion magneticField].field.x
-                                    magnetometerY:(float)[motion magneticField].field.y
-                                    magnetometerZ:(float)[motion magneticField].field.z];
+        for (NSUInteger i = 0; i < _sensorFusionOversamplingFrequencyHz / _coreMotionSamplingFrequencyHz; i++)
+        {
+            [_mahonySensorFusion updateWithGyroscopeX:(float)[motion rotationRate].x
+                                           gyroscopeY:(float)[motion rotationRate].y
+                                           gyroscopeZ:(float)[motion rotationRate].z
+                                       accelerometerX:(float)[motion gravity].x * -1.0    // Accelerometer angles inverted.
+                                       accelerometerY:(float)[motion gravity].y * -1.0    // Accelerometer angles inverted.
+                                       accelerometerZ:(float)[motion gravity].z * -1.0    // Accelerometer angles inverted.
+                                        magnetometerX:(float)[motion magneticField].field.x
+                                        magnetometerY:(float)[motion magneticField].field.y
+                                        magnetometerZ:(float)[motion magneticField].field.z];
+        }
         
         // Calculate roll, pitch, yaw.
         float roll, pitch, yaw;
@@ -314,12 +331,17 @@
 @implementation CoreMotionTestDriver (Internal)
 
 // Common initialization.
-- (void)commonInitializationWithSampleFrequencyHz:(float)sampleFrequencyHz
+- (void)commonInitializationWithCoreMotionSampleFrequencyHz:(NSUInteger)coreMotionSampleFrequencyHz
+                        sensorFusionOversamplingFrequencyHz:(NSUInteger)sensorFusionOversamplingFrequencyHz
 {
+    // Initialize sampling rates.
+    _coreMotionSamplingFrequencyHz = coreMotionSampleFrequencyHz;
+    _sensorFusionOversamplingFrequencyHz = MAX(coreMotionSampleFrequencyHz, sensorFusionOversamplingFrequencyHz);
+    
     // Allocate and initialize the motion manager.
     _motionManager = [[CMMotionManager alloc] init];
     [_motionManager setShowsDeviceMovementDisplay:YES];
-    [_motionManager setDeviceMotionUpdateInterval:1.0 / sampleFrequencyHz];
+    [_motionManager setDeviceMotionUpdateInterval:1.0 / (NSTimeInterval)coreMotionSampleFrequencyHz];
     
     // Allocate and initialize the operation queue.
     _operationQueue = [[NSOperationQueue alloc] init];

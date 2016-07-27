@@ -18,13 +18,15 @@
 @property (nonatomic, weak, nullable) id<CoreMotionTestDriverDelegate> delegate;
 
 // Class initializer.
-- (nullable instancetype)initMadgwickSensorFusionWithSampleFrequencyHz:(float)sampleFrequencyHz
-                                                                  beta:(float)beta;
+- (nullable instancetype)initMadgwickSensorFusionWithCoreMotionSamplingFrequencyHz:(NSUInteger)coreMotionSamplingFrequencyHz
+                                               sensorFusionOversamplingFrequencyHz:(NSUInteger)sensorFusionOversamplingFrequencyHz
+                                                                              beta:(float)beta;
 
 // Class initializer.
-- (nullable instancetype)initMahonySensorFusionWithSampleFrequencyHz:(float)sampleFrequencyHz
-                                                               twoKp:(float)twoKp
-                                                               twoKi:(float)twoKi;
+- (nullable instancetype)initMahonySensorFusionWithCoreMotionSamplingFrequencyHz:(NSUInteger)coreMotionSamplingFrequencyHz
+                                             sensorFusionOversamplingFrequencyHz:(NSUInteger)sensorFusionOversamplingFrequencyHz
+                                                                           twoKp:(float)twoKp
+                                                                           twoKi:(float)twoKi;
 
 // Converts from radians to degrees.
 + (float)degreesFromRadians:(float)radians;
