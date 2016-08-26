@@ -83,7 +83,7 @@
     {
         *roll  = 0.0f;
         *pitch = (float)-M_PI;
-        *yaw   = -2.0f * atan2(q2, q0);
+        *yaw   = -2.0f * atan2f(q2, q0);
     }
     else
     {
