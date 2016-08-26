@@ -66,9 +66,9 @@
                                        pitch:(nonnull float *)pitch
                                          yaw:(nonnull float *)yaw
 {
-    *yaw   = -atan2(q0 * q0 - q1 * q1 + q2 * q2 - q3 * q3, 2.0f * (q1 * q2 - q0 * q3));
-    *pitch = asin(2.0f * (q2 * q3 + q0 * q1));
-    *roll  = atan2(2.0f * (q0 * q2 - q1 * q3), q0 * q0 - q1 * q1 - q2 * q2 + q3 * q3);
+    *yaw   = atan2f(q0 * q0 - q1 * q1 + q2 * q2 - q3 * q3, 2.0f * (q1 * q2 - q0 * q3));
+    *pitch = asinf(2.0f * (q2 * q3 + q0 * q1));
+    *roll  = atan2f(2.0f * (q0 * q2 - q1 * q3), q0 * q0 - q1 * q1 - q2 * q2 + q3 * q3);
 }
 
 // Calculates Euler angles from quaternion.
