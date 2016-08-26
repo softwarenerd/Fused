@@ -171,9 +171,9 @@
                                          accelerometerX:(float)[motion gravity].x * -1.0    // Accelerometer angles are inverted.
                                          accelerometerY:(float)[motion gravity].y * -1.0    // Accelerometer angles are inverted.
                                          accelerometerZ:(float)[motion gravity].z * -1.0    // Accelerometer angles are inverted.
-                                          magnetometerX:(float)[motion magneticField].field.x
-                                          magnetometerY:(float)[motion magneticField].field.y
-                                          magnetometerZ:(float)[motion magneticField].field.z];
+                                          magnetometerX:(float)[motion magneticField].field.x * -1.0
+                                          magnetometerY:(float)[motion magneticField].field.y * -1.0
+                                          magnetometerZ:(float)[motion magneticField].field.z * -1.0];
         }
         
         // Calculate roll, pitch, yaw.
@@ -223,9 +223,9 @@
                                    accelerometerX:[motion gravity].x * -1.0f
                                    accelerometerY:[motion gravity].y * -1.0f
                                    accelerometerZ:[motion gravity].z * -1.0f
-                                    magnetometerX:[motion magneticField].field.x
-                                    magnetometerY:[motion magneticField].field.y
-                                    magnetometerZ:[motion magneticField].field.z
+                                    magnetometerX:[motion magneticField].field.x * -1.0
+                                    magnetometerY:[motion magneticField].field.y * -1.0
+                                    magnetometerZ:[motion magneticField].field.z * -1.0
                                                q0:[_madgwickSensorFusion q0]
                                                q1:[_madgwickSensorFusion q1]
                                                q2:[_madgwickSensorFusion q2]
@@ -251,9 +251,9 @@
                                        accelerometerX:(float)[motion gravity].x * -1.0    // Accelerometer angles inverted.
                                        accelerometerY:(float)[motion gravity].y * -1.0    // Accelerometer angles inverted.
                                        accelerometerZ:(float)[motion gravity].z * -1.0    // Accelerometer angles inverted.
-                                        magnetometerX:(float)[motion magneticField].field.x
-                                        magnetometerY:(float)[motion magneticField].field.y
-                                        magnetometerZ:(float)[motion magneticField].field.z];
+                                        magnetometerX:(float)[motion magneticField].field.x * -1.0
+                                        magnetometerY:(float)[motion magneticField].field.y * -1.0
+                                        magnetometerZ:(float)[motion magneticField].field.z * -1.0];
         }
         
         // Calculate roll, pitch, yaw.
@@ -303,9 +303,9 @@
                                    accelerometerX:[motion gravity].x * -1.0f
                                    accelerometerY:[motion gravity].y * -1.0f
                                    accelerometerZ:[motion gravity].z * -1.0f
-                                    magnetometerX:[motion magneticField].field.x
-                                    magnetometerY:[motion magneticField].field.y
-                                    magnetometerZ:[motion magneticField].field.z
+                                    magnetometerX:[motion magneticField].field.x * -1.0
+                                    magnetometerY:[motion magneticField].field.y * -1.0
+                                    magnetometerZ:[motion magneticField].field.z * -1.0
                                                q0:[_mahonySensorFusion q0]
                                                q1:[_mahonySensorFusion q1]
                                                q2:[_mahonySensorFusion q2]
