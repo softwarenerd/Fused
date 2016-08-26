@@ -97,8 +97,8 @@
 
 // Class initializer.
 - (nullable instancetype)initMadgwickSensorFusionWithCoreMotionSamplingFrequencyHz:(NSUInteger)coreMotionSamplingFrequencyHz
-                                             sensorFusionOversamplingFrequencyHz:(NSUInteger)sensorFusionOversamplingFrequencyHz
-                                                                            beta:(float)beta
+                                               sensorFusionOversamplingFrequencyHz:(NSUInteger)sensorFusionOversamplingFrequencyHz
+                                                                              beta:(float)beta
 {
     // Initialize superclass.
     self = [super init];
@@ -116,7 +116,7 @@
     // Allocate and initialize the Madgwick sensor fusion.
     _madgwickSensorFusion = [[MadgwickSensorFusion alloc] initWithSampleFrequencyHz:(float)sensorFusionOversamplingFrequencyHz
                                                                                beta:beta];
-
+    
     // Done.
     return self;
 }
@@ -161,9 +161,9 @@
             [_madgwickSensorFusion updateWithGyroscopeX:(float)[motion rotationRate].x
                                              gyroscopeY:(float)[motion rotationRate].y
                                              gyroscopeZ:(float)[motion rotationRate].z
-                                         accelerometerX:(float)[motion gravity].x
-                                         accelerometerY:(float)[motion gravity].y
-                                         accelerometerZ:(float)[motion gravity].z
+                                         accelerometerX:(float)[motion gravity].x * -1.0    // Accelerometer angles are inverted.
+                                         accelerometerY:(float)[motion gravity].y * -1.0    // Accelerometer angles are inverted.
+                                         accelerometerZ:(float)[motion gravity].z * -1.0    // Accelerometer angles are inverted.
                                           magnetometerX:(float)[motion magneticField].field.x
                                           magnetometerY:(float)[motion magneticField].field.y
                                           magnetometerZ:(float)[motion magneticField].field.z];
@@ -213,9 +213,9 @@
                               didUpdateGyroscopeX:[motion rotationRate].x
                                        gyroscopeY:[motion rotationRate].y
                                        gyroscopeZ:[motion rotationRate].z
-                                   accelerometerX:[motion gravity].x
-                                   accelerometerY:[motion gravity].y
-                                   accelerometerZ:[motion gravity].z
+                                   accelerometerX:[motion gravity].x * -1.0f
+                                   accelerometerY:[motion gravity].y * -1.0f
+                                   accelerometerZ:[motion gravity].z * -1.0f
                                     magnetometerX:[motion magneticField].field.x
                                     magnetometerY:[motion magneticField].field.y
                                     magnetometerZ:[motion magneticField].field.z
@@ -231,7 +231,7 @@
                                     coreMotionYaw:coreMotionYaw];
         }
     };
-
+    
     // The Mahony device motion handler.
     CMDeviceMotionHandler mahonyHandlerhandler = ^(CMDeviceMotion * _Nullable motion, NSError * _Nullable error)
     {
@@ -241,10 +241,10 @@
             [_mahonySensorFusion updateWithGyroscopeX:(float)[motion rotationRate].x
                                            gyroscopeY:(float)[motion rotationRate].y
                                            gyroscopeZ:(float)[motion rotationRate].z
-                                       accelerometerX:(float)[motion gravity].x
-                                       accelerometerY:(float)[motion gravity].y
-                                       accelerometerZ:(float)[motion gravity].z
-                                       magnetometerX:(float)[motion magneticField].field.x
+                                       accelerometerX:(float)[motion gravity].x * -1.0    // Accelerometer angles inverted.
+                                       accelerometerY:(float)[motion gravity].y * -1.0    // Accelerometer angles inverted.
+                                       accelerometerZ:(float)[motion gravity].z * -1.0    // Accelerometer angles inverted.
+                                        magnetometerX:(float)[motion magneticField].field.x
                                         magnetometerY:(float)[motion magneticField].field.y
                                         magnetometerZ:(float)[motion magneticField].field.z];
         }
@@ -293,9 +293,9 @@
                               didUpdateGyroscopeX:[motion rotationRate].x
                                        gyroscopeY:[motion rotationRate].y
                                        gyroscopeZ:[motion rotationRate].z
-                                   accelerometerX:[motion gravity].x
-                                   accelerometerY:[motion gravity].y
-                                   accelerometerZ:[motion gravity].z
+                                   accelerometerX:[motion gravity].x * -1.0f
+                                   accelerometerY:[motion gravity].y * -1.0f
+                                   accelerometerZ:[motion gravity].z * -1.0f
                                     magnetometerX:[motion magneticField].field.x
                                     magnetometerY:[motion magneticField].field.y
                                     magnetometerZ:[motion magneticField].field.z
@@ -311,7 +311,7 @@
                                     coreMotionYaw:coreMotionYaw];
         }
     };
-
+    
     // Start motion updates.
     [_motionManager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXMagneticNorthZVertical
                                                         toQueue:_operationQueue
