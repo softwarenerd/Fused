@@ -58,20 +58,6 @@
 }
 
 // Calculates Euler angles from quaternion.
-+ (void)testCalculateEulerAnglesFromQuaternionQ0:(float)q0
-                                          q1:(float)q1
-                                          q2:(float)q2
-                                          q3:(float)q3
-                                        roll:(nonnull float *)roll
-                                       pitch:(nonnull float *)pitch
-                                         yaw:(nonnull float *)yaw
-{
-    *yaw   = atan2f(q0 * q0 - q1 * q1 + q2 * q2 - q3 * q3, 2.0f * (q1 * q2 - q0 * q3));
-    *pitch = asinf(2.0f * (q2 * q3 + q0 * q1));
-    *roll  = atan2f(2.0f * (q0 * q2 - q1 * q3), q0 * q0 - q1 * q1 - q2 * q2 + q3 * q3);
-}
-
-// Calculates Euler angles from quaternion.
 + (void)calculateEulerAnglesFromQuaternionQ0:(float)q0
                                           q1:(float)q1
                                           q2:(float)q2
@@ -185,7 +171,7 @@
         
         // Calculate roll, pitch, yaw.
         float roll, pitch, yaw;
-        [CoreMotionTestDriver testCalculateEulerAnglesFromQuaternionQ0:[_madgwickSensorFusion q0]
+        [CoreMotionTestDriver calculateEulerAnglesFromQuaternionQ0:[_madgwickSensorFusion q0]
                                                                 q1:[_madgwickSensorFusion q1]
                                                                 q2:[_madgwickSensorFusion q2]
                                                                 q3:[_madgwickSensorFusion q3]
@@ -265,7 +251,7 @@
         
         // Calculate roll, pitch, yaw.
         float roll, pitch, yaw;
-        [CoreMotionTestDriver testCalculateEulerAnglesFromQuaternionQ0:[_mahonySensorFusion q0]
+        [CoreMotionTestDriver calculateEulerAnglesFromQuaternionQ0:[_mahonySensorFusion q0]
                                                                 q1:[_mahonySensorFusion q1]
                                                                 q2:[_mahonySensorFusion q2]
                                                                 q3:[_mahonySensorFusion q3]
