@@ -9,9 +9,14 @@
 //
 
 #import <CoreMotion/CoreMotion.h>
+#import <CoreLocation/CoreLocation.h>
 #import "CoreMotionTestDriver.h"
 #import "MadgwickSensorFusion.h"
 #import "MahonySensorFusion.h"
+
+// CoreMotionTestDriver (CLLocationManagerDelegate) interface.
+@interface CoreMotionTestDriver (CLLocationManagerDelegate) <CLLocationManagerDelegate>
+@end
 
 // CoreMotionTestDriver (Internal) interface.
 @interface CoreMotionTestDriver (Internal)
@@ -26,6 +31,8 @@
 @implementation CoreMotionTestDriver
 {
 @private
+    CLLocationManager * _locationManager;
+    
     // The motion manager.
     CMMotionManager * _motionManager;
     
@@ -327,6 +334,34 @@
 
 @end
 
+// CoreMotionTestDriver (CLLocationManagerDelegate) implementation.
+@implementation CoreMotionTestDriver (CLLocationManagerDelegate)
+
+/*
+ *  locationManager:didUpdateHeading:
+ *
+ *  Discussion:
+ *    Invoked when a new heading is available.
+ */
+- (void)locationManager:(CLLocationManager *)manager
+       didUpdateHeading:(CLHeading *)inputHeading
+{
+}
+
+/*
+ *  locationManagerShouldDisplayHeadingCalibration:
+ *
+ *  Discussion:
+ *    Invoked when a new heading is available. Return YES to display heading calibration info. The display
+ *    will remain until heading is calibrated, unless dismissed early via dismissHeadingCalibrationDisplay.
+ */
+- (BOOL)locationManagerShouldDisplayHeadingCalibration:(CLLocationManager *)manager
+{
+    return NO;
+}
+
+@end
+
 // CoreMotionTestDriver (Internal) implementation
 @implementation CoreMotionTestDriver (Internal)
 
@@ -338,9 +373,14 @@
     _coreMotionSamplingFrequencyHz = coreMotionSamplingFrequencyHz;
     _sensorFusionOversamplingFrequencyHz = MAX(coreMotionSamplingFrequencyHz, sensorFusionOversamplingFrequencyHz);
     
+    // Allocate and initialize the location manager.
+    _locationManager = [[CLLocationManager alloc] init];
+    [_locationManager setDelegate:(id<CLLocationManagerDelegate>)self];
+    [_locationManager startUpdatingHeading];
+    
     // Allocate and initialize the motion manager.
     _motionManager = [[CMMotionManager alloc] init];
-    [_motionManager setShowsDeviceMovementDisplay:YES];
+    //[_motionManager setShowsDeviceMovementDisplay:YES];
     [_motionManager setDeviceMotionUpdateInterval:1.0 / (NSTimeInterval)coreMotionSamplingFrequencyHz];
     
     // Allocate and initialize the operation queue.
